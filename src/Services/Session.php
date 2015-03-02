@@ -72,7 +72,7 @@ class Session extends SessionHandler {
         $_SESSION = [];
 
         setcookie(
-            $this->name,
+            session_name(),
             '',
             time() - 42000,
             $this->cookie['path'],
