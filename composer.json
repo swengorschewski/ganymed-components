@@ -1,0 +1,22 @@
+{
+    "name": "ganymed-components",
+    "description": "Components for a simple PHP framework",
+    "require-dev": {
+        "phpunit/phpunit": "~4.5.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Swen Gorschewski",
+            "email": "swen.gorschewski@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Ganymed\\": "src/"
+        }
+    }
+
+}
