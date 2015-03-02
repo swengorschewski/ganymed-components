@@ -17,7 +17,8 @@ abstract class Model {
 
     function __construct()
     {
-        $config = require __DIR__ . '/../../../../../app/config/models.php';
+        // TODO: remove hard coded path
+        $config = require __DIR__ . '/../../../../app/config/models.php';
         $storageImplementation = '\Ganymed\Persistence\\' . ucfirst($config['driver']) . 'Storage';
         $this->storage = new $storageImplementation(get_class($this));
     }

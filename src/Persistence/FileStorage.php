@@ -8,7 +8,8 @@ class FileStorage implements StorageInterface {
 
     public function __construct($modelName)
     {
-        $this->config = require __DIR__ . '/../../../../../app/config/models.php';
+        // TODO: remove hard coded path
+        $this->config = require __DIR__ . '/../../../../app/config/models.php';
         $this->file = $this->config['location'] . strtolower($modelName) . 's';
     }
 
