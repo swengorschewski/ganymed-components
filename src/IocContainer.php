@@ -8,6 +8,7 @@
  * The Package is distributed under the MIT License
  */
 
+use Ganymed\Exceptions\ClassNotFoundException;
 use Ganymed\Exceptions\MethodNotFoundException;
 use Ganymed\Exceptions\TypeHintException;
 
@@ -108,7 +109,7 @@ class IocContainer {
      *
      * @param $className
      * @return object
-     * @throws MethodNotFoundException
+     * @throws ClassNotFoundException
      * @throws TypeHintException
      */
     public function getClass($className)
@@ -123,7 +124,7 @@ class IocContainer {
 
         // Checks if the supplied class exists.
         if (!class_exists($className)) {
-            throw new MethodNotFoundException('Class ' . $className . ' does not exist');
+            throw new ClassNotFoundException('Class ' . $className . ' does not exist');
         }
 
         // Checks if the given class has a constructor and if so resolves the dependencies of the constructor.

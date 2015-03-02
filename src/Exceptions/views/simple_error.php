@@ -33,24 +33,19 @@
             -webkit-justify-content: center;
             -ms-flex-pack: center;
             justify-content: center;
-        }
-
-        .error {
-            width: 60%;
-            max-width: 40em;
             color: #6b6b6b;
+            text-align: center;
         }
 
         h1 {
-            font-size: 2.4em;
-            margin: 0 0 0.5em 0;
+            font-size: 4.6em;
+            margin: 0;
             font-family: 'Roboto', sans-serif;
             font-weight: 300;
         }
-
         h2 {
-            font-size: 1.4em;
-            margin: 1em 0 0.5em 0;
+            font-size: 1.2em;
+            margin: 0 0 0 0;
             font-family: 'Roboto', sans-serif;
             font-weight: 300;
         }
@@ -58,19 +53,9 @@
 
 
     <div class="center">
-        <div class="error">
-            <h2><?php echo (new \ReflectionClass($exception))->getShortName(); ?></h2>
-            <h1><?php echo $exception->getMessage(); ?></h1>
-            <ul>
-                <?php
-                    pd($exception->getFile());
-                    foreach($exception->getTrace() as $trace) {
-                        echo '<li>';
-                        pd($trace);
-                        echo '</li>';
-                    }
-                ?>
-            </ul>
+        <div>
+            <h2>An error has occurred.</h2>
+            <h1>Sorry!</h1>
         </div>
     </div>
 

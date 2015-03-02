@@ -8,11 +8,8 @@
  * The Package is distributed under the MIT License
  */
 
-use Ganymed\Exceptions\MethodNotFoundException;
-use Ganymed\Exceptions\NotFoundException;
-use Ganymed\Exceptions\NotImplementedException;
-use Ganymed\Exceptions\TypeHintException;
-use Ganymed\exceptions\ViewNotFoundException;
+use Ganymed\Exceptions\ErrorHandler;
+use Ganymed\Exceptions\FileNotFoundException;
 use Ganymed\Router\Router;
 
 class App {
@@ -21,9 +18,17 @@ class App {
      * Set environment variables supplied by the .env.php.
      *
      * @param $dotEnv
+     * @throws FileNotFoundException
      */
     public function setEnv($dotEnv)
     {
+        $errorHandler = ErrorHandler::getInstance();
+
+        // Manually catch error because the error handling is not initialized yet.
+        if (!is_file($dotEnv)) {
+            $errorHandler->displayException(new FileNotFoundException('File .env.php not found.'));
+        }
+
         $env = parse_ini_file($dotEnv);
 
         foreach ($env as $key => $variable) {
@@ -34,6 +39,10 @@ class App {
         if (getenv('environment') == '') {
             putenv('environment=production');
         }
+
+        // Set error handling depending on the supplied environment.
+        $errorHandler->setEnv(getenv('environment'));
+        $errorHandler->run();
     }
 
     /**
@@ -41,17 +50,6 @@ class App {
      */
     public function execute()
     {
-
-        // Set error handling depending on the supplied environment.
-        if (getenv('environment') != 'production') {
-            register_shutdown_function("\\Ganymed\\Exceptions\\ErrorHandler::checkForFatal");
-            set_error_handler("\\Ganymed\\Exceptions\\ErrorHandler::logError");
-            set_exception_handler("\\Ganymed\\Exceptions\\ErrorHandler::logException");
-            error_reporting(E_ALL);
-            ini_set("display_errors", 1);
-        } else {
-
-        }
 
         // Get the current route.
         $route = Router::getInstance()->getRoute();
@@ -72,39 +70,6 @@ class App {
             echo call_user_func($callback, $route->getParams());
 
         }
-
-/*        // Try to resolve route, controller, view and handle occurring errors.
-        try {
-
-
-
-        } catch (\Exception $e) {
-
-            $error = $e->getMessage();
-
-            switch($e) {
-                case ($e instanceof NotImplementedException):
-                    header($_SERVER["SERVER_PROTOCOL"] . " 501 Not Implemented");
-                    $error = $e->getMessage();
-                    break;
-                case ($e instanceof MethodNotFoundException):
-                    header($_SERVER["SERVER_PROTOCOL"] . " 500 Internal Server Error");
-                    $error = $e->getMessage();
-                    break;
-                case ($e instanceof ViewNotFoundException):
-                    header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
-                    $error = $e->getMessage();
-                    break;
-                case ($e instanceof NotFoundException):
-                    header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
-                    $error = $e->getMessage();
-                case ($e instanceof TypeHintException):
-                    header($_SERVER["SERVER_PROTOCOL"] . " 500 Internal Server Error");
-                    $error = $e->getMessage();
-                    break;
-            }
-
-        }*/
 
     }
 }
