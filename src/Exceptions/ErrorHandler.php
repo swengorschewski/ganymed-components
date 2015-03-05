@@ -64,7 +64,7 @@ class ErrorHandler {
     /**
      * Check if the last error is a fatal error and throw appropriate exception.
      */
-    private function checkForFatal()
+    public function checkForFatal()
     {
         $error = error_get_last();
         if ($error['type'] == E_ERROR)
@@ -80,7 +80,7 @@ class ErrorHandler {
      * @param $file
      * @param $line
      */
-    private function logError($errorNumber, $message, $file, $line)
+    public function logError($errorNumber, $message, $file, $line)
     {
         $this->displayException( new \ErrorException($message, 0, $errorNumber, $file, $line));
     }
