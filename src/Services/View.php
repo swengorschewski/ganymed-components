@@ -37,7 +37,7 @@ class View {
     /**
      * Html file with resolved data variables.
      *
-     * @var html document
+     * @var String
      */
     private $renderedView;
 
@@ -130,7 +130,7 @@ class View {
             $this->renderedView = $renderedTemplate;
         }
 
-        return $this->renderedView;
+        echo $this->renderedView;
     }
 
 
