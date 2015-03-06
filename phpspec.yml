@@ -1,0 +1,5 @@
+suites:
+  ganymed_suite:
+    namespace: Ganymed
+    src_path: src
+    spec_prefix: spec
