@@ -48,28 +48,15 @@ class IocContainer {
     private function __construct() {}
 
     /**
-     * Bind a class.
-     *
-     * @param $className
-     * @param $callable
-     */
-    public function bind($className, $callable)
-    {
-        if (is_callable($callable)) {
-            $this->bindings[$className] = $callable;
-        }
-    }
-
-    /**
-     * Bind multiple classes.
+     * Store multiple bindings.
      *
      * @param $bindings
      * @throws \Exception
      */
-    public function bindAll($bindings)
+    public function bind($bindings)
     {
         if(!is_array($bindings)) {
-            throw new \Exception('Expected an array.');
+            throw new \InvalidArgumentException('Expected an array.');
         }
 
         foreach($bindings as $binding) {
@@ -87,7 +74,7 @@ class IocContainer {
      * @param $className
      * @return bool
      */
-    private function isBound($className)
+    public function hasBinding($className)
     {
         return array_key_exists($className, $this->bindings);
     }
@@ -105,6 +92,21 @@ class IocContainer {
     }
 
     /**
+     * Gets the short class name from any given class name.
+     *
+     * @param $className
+     * @return string
+     */
+    private function getAlias($className)
+    {
+        if(class_exists($className)) {
+            return (new \ReflectionClass($className))->getShortName();
+        } else {
+            return $className;
+        }
+    }
+
+    /**
      * Resolve a given class from the container.
      *
      * @param $className
@@ -118,7 +120,7 @@ class IocContainer {
         $alias = $this->getAlias($className);
 
         // Try to resolve class from a registered binding.
-        if ($this->isBound($alias)) {
+        if ($this->hasBinding($alias)) {
             return $this->resolveBinding($alias);
         }
 
@@ -177,16 +179,6 @@ class IocContainer {
         }
 
         return $resolved;
-    }
-
-    // Get the short class name which is used as an alias.
-    private function getAlias($className)
-    {
-        if(class_exists($className)) {
-            return (new \ReflectionClass($className))->getShortName();
-        } else {
-            return $className;
-        }
     }
 
 }
