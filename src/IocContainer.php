@@ -29,7 +29,7 @@ class IocContainer {
     private $bindings = [];
 
     /**
-     * Return the an instance of the IocContainer.
+     * Return an instance of the IocContainer.
      *
      * @return IocContainer
      */
