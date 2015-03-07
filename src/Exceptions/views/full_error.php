@@ -113,7 +113,7 @@
             <ul>
                 <?php
                     foreach($exception->getTrace() as $key => $trace) {
-                        if($key != 0) {
+                        if($key != 0 && array_key_exists('file', $trace)) {
                             echo '<li>';
                             echo '<span>' . $trace['file']. '<span class="notice">:' . $trace['line'] . '</span></span>';
                             echo '</li>';
