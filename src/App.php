@@ -10,6 +10,7 @@
 
 use Ganymed\Exceptions\ErrorHandler;
 use Ganymed\Exceptions\FileNotFoundException;
+use Ganymed\Http\Request;
 use Ganymed\Router\Router;
 
 class App {
@@ -47,12 +48,17 @@ class App {
 
     /**
      * Execute the app to resolve routes, controllers and dispatch views.
+     *
+     * @param Router $router
+     * @throws Exceptions\ClassNotFoundException
+     * @throws Exceptions\MethodNotFoundException
+     * @throws Exceptions\TypeHintException
      */
-    public function execute()
+    public function execute(Router $router)
     {
 
         // Get the current route.
-        $route = Router::getInstance()->getRoute();
+        $route = $router->getRoute(new Request());
         $callback = $route->getCallback();
 
         // Resolve callbacks and matching parameters.
