@@ -1,5 +1,6 @@
 suites:
   ganymed_suite:
     namespace: Ganymed
+    psr4_prefix: Ganymed
     src_path: src
     spec_prefix: spec
