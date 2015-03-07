@@ -1,16 +1,15 @@
 <?php namespace Ganymed\Persistence;
 
 
+use Ganymed\Exceptions\NotFoundException;
+
 class FileStorage implements StorageInterface {
 
-    protected $config;
     protected $file;
 
-    public function __construct($modelName)
+    public function __construct($fileName, $config)
     {
-        // TODO: remove hard coded path
-        $this->config = require __DIR__ . '/../../../../app/config/models.php';
-        $this->file = $this->config['location'] . strtolower($modelName) . 's';
+        $this->file = $config['location'] . $fileName;
     }
 
     public function get($id)
@@ -28,7 +27,7 @@ class FileStorage implements StorageInterface {
         if (is_file($this->file)) {
             return unserialize(file_get_contents($this->file));
         } else {
-            return [];
+            throw new NotFoundException('File ' . $this->file . ' does not exists.');
         }
     }
 
@@ -39,7 +38,11 @@ class FileStorage implements StorageInterface {
 
     public function save($model)
     {
-        $usersArray = $this->getAll();
+        if(file_exists($this->file)) {
+            $usersArray = $this->getAll();
+        } else {
+            $usersArray = [];
+        }
         $usersArray[$model->id] = $model;
         file_put_contents($this->file, serialize($usersArray));
     }

@@ -17,10 +17,11 @@ abstract class Model {
 
     function __construct()
     {
-        // TODO: remove hard coded path
         $config = require __DIR__ . '/../../../../app/config/models.php';
         $storageImplementation = '\Ganymed\Persistence\\' . ucfirst($config['driver']) . 'Storage';
-        $this->storage = new $storageImplementation(get_class($this));
+        $storageName = strtolower(get_class($this)) . 's';
+
+        $this->storage = new $storageImplementation($storageName, $config);
     }
 
     public function __get($name)
