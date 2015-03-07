@@ -3,6 +3,7 @@
 use Ganymed\Exceptions\MethodNotFoundException;
 use Ganymed\Exceptions\NotFoundException;
 use Ganymed\Exceptions\NotImplementedException;
+use Ganymed\Http\Request;
 
 /*
  * This file is part of the Ganymed Package.
@@ -13,13 +14,6 @@ use Ganymed\Exceptions\NotImplementedException;
  */
 
 class Router {
-
-    /**
-     * The current url path.
-     *
-     * @var String
-     */
-    protected $uri;
 
     /**
      * Storage for all defined routes.
@@ -34,33 +28,6 @@ class Router {
      * @var Route
      */
     protected $missing;
-
-    /**
-     * Instance of the router.
-     *
-     * @Router
-     */
-    private static $instance;
-
-    /**
-     * Return the an instance of the router.
-     *
-     * @return Router
-     */
-    public static function getInstance()
-    {
-        if (self::$instance === null) {
-            self::$instance = new self;
-        }
-
-        return self::$instance;
-    }
-
-    private function __construct()
-    {
-        $this->scriptName = ltrim($_SERVER['SCRIPT_NAME'], '/');
-        $this->uri = str_replace($this->scriptName, '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
-    }
 
     /**
      * Wrapper for GET routes
@@ -112,11 +79,12 @@ class Router {
     /**
      * Resolve the current Route.
      *
+     * @param Request $request
      * @return Route
      * @throws NotFoundException
      * @throws NotImplementedException
      */
-    public function getRoute()
+    public function getRoute(Request $request)
     {
         $notImplemented = false;
 
@@ -127,7 +95,7 @@ class Router {
          */
         foreach ($this->routes as $route) {
             // Check if the current route matches the current uri and determine the parameter values.
-            if (preg_match($route->getPattern(), $this->uri, $paramValues)) {
+            if (preg_match($route->getPattern(), $request->getUri(), $paramValues)) {
 
 
                 // Check if the current HTTP method matches the method stored in the route.
