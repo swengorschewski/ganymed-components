@@ -8,6 +8,11 @@ use Prophecy\Argument;
 
 class RouterSpec extends ObjectBehavior
 {
+
+    function let() {
+        $this->beConstructedThrough('getInstance', []);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('Ganymed\Router\Router');
@@ -21,9 +26,8 @@ class RouterSpec extends ObjectBehavior
     }
 
     function it_should_throw_404(Request $request) {
-        $request->getUri()->willReturn('/login')->shouldBeCalled();
+        $request->getUri()->willReturn('/auth')->shouldBeCalled();
 
-        $this->get('/auth', function() {});
         $this->shouldThrow('Ganymed\Exceptions\NotFoundException')->duringGetRoute($request);
     }
 

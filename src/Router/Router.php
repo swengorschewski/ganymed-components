@@ -30,6 +30,32 @@ class Router {
     protected $missing;
 
     /**
+     * Instance of the router.
+     *
+     * @Router
+     */
+    private static $instance;
+
+    /**
+     * Return an instance of the router.
+     *
+     * @return Router
+     */
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self;
+        }
+
+        return self::$instance;
+    }
+
+    /**
+     * Private constructor to prevent instantiating with the new attribute.
+     */
+    private function __construct() {}
+
+    /**
      * Wrapper for GET routes
      *
      * @param $routePath
