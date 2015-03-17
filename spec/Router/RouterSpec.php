@@ -25,10 +25,10 @@ class RouterSpec extends ObjectBehavior
         $this->getRoute($request)->shouldHaveType('Ganymed\Router\Route');
     }
 
-    function it_should_throw_404(Request $request) {
+    function it_should_throw_exception(Request $request) {
         $request->getUri()->willReturn('/auth')->shouldBeCalled();
 
-        $this->shouldThrow('Ganymed\Exceptions\NotFoundException')->duringGetRoute($request);
+        $this->shouldThrow('Ganymed\Exceptions\PageNotFoundException')->duringGetRoute($request);
     }
 
     function it_should_return_route_on_404_if_missing_is_set(Request $request) {

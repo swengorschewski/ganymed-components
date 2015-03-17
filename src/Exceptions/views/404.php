@@ -32,18 +32,8 @@
             -webkit-justify-content: center;
             -ms-flex-pack: center;
             justify-content: center;
-        }
-
-        .error {
-            width: 80%;
-            max-width: 60em;
             color: #6b6b6b;
-        }
-
-        h1 {
-            font-size: 2.4em;
-            margin: 0 0 0.5em 0;
-            font-weight: 300;
+            text-align: center;
         }
 
         h2 {
@@ -53,19 +43,10 @@
             color: #E56C6C;
         }
 
-        ul {
-            padding: 0;
+        h1 {
+            font-size: 3em;
             margin: 0;
-            list-style: none;
-        }
-
-        li {
-            font-size: 0.9em;
-            line-height: 3em;
-        }
-
-        .notice {
-            color: #009688;
+            font-weight: 300;
         }
 
         @font-face {
@@ -104,23 +85,9 @@
 
 
     <div class="center">
-        <div class="error">
+        <div>
             <h2><?php echo (new \ReflectionClass($exception))->getShortName(); ?></h2>
-            <h1><?php echo http_response_code() . ' - ' . $exception->getMessage(); ?></h1>
-            <span><?php echo $exception->getFile(). '<span class="notice">:' .$exception->getLine().'</span>'; ?></span>
-
-            <h2>Trace:</h2>
-            <ul>
-                <?php
-                    foreach($exception->getTrace() as $key => $trace) {
-                        if($key != 0 && array_key_exists('file', $trace)) {
-                            echo '<li>';
-                            echo '<span>' . $trace['file']. '<span class="notice">:' . $trace['line'] . '</span></span>';
-                            echo '</li>';
-                        }
-                    }
-                ?>
-            </ul>
+            <h1><?php echo http_response_code() ?> - Requested page not found.</h1>
         </div>
     </div>
 

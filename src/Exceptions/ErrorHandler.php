@@ -96,7 +96,12 @@ class ErrorHandler {
         $view = new View(__DIR__ . '/views/');
 
         if($this->production) {
-            echo $view->withTemplate('simple_error')->render();
+
+            if($exception instanceof PageNotFoundException) {
+                echo $view->withTemplate('404')->withData(compact('exception'))->render();
+            } else {
+                echo $view->withTemplate('simple_error')->render();
+            }
         } else {
             echo $view->withTemplate('full_error')->withData(compact('exception'))->render();
         }
@@ -111,7 +116,16 @@ class ErrorHandler {
      */
     private function setHeader(\Exception $exception)
     {
-        // TODO: set matching status code for $exception
+        switch($exception) {
+            case ($exception instanceof PageNotFoundException):
+                http_response_code(404);
+                break;
+            case ($exception instanceof NotImplementedException):
+                http_response_code(501);
+                break;
+            default:
+                http_response_code(500);
+        }
     }
 
     /**

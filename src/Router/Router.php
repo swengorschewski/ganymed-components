@@ -1,7 +1,7 @@
 <?php namespace Ganymed\Router;
 
 use Ganymed\Exceptions\MethodNotFoundException;
-use Ganymed\Exceptions\NotFoundException;
+use Ganymed\Exceptions\PageNotFoundException;
 use Ganymed\Exceptions\NotImplementedException;
 use Ganymed\Http\Request;
 
@@ -107,7 +107,7 @@ class Router {
      *
      * @param Request $request
      * @return Route
-     * @throws NotFoundException
+     * @throws PageNotFoundException
      * @throws NotImplementedException
      */
     public function getRoute(Request $request)
@@ -147,7 +147,7 @@ class Router {
         }
 
         if ($notImplemented) {
-            throw new NotImplementedException('501 - Method not implemented');
+            throw new NotImplementedException('Method not implemented');
         }
 
         // Check if the missing callback is set.
@@ -157,7 +157,7 @@ class Router {
 
         }
 
-        throw new NotFoundException('404 - Requested page not found');
+        throw new PageNotFoundException('Requested page not found');
     }
 
     /**
@@ -175,7 +175,7 @@ class Router {
         } elseif (is_callable($callback)) {
             return $callback;
         } else {
-            throw new MethodNotFoundException('500 - Callback not found');
+            throw new MethodNotFoundException('Callback not found');
         }
 
     }
