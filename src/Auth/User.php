@@ -1,13 +1,12 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: swen
- * Date: 17/03/15
- * Time: 17:37
+<?php namespace Ganymed\Auth;
+
+/*
+ * This file is part of the Ganymed Package.
+ *
+ * (c) Swen Gorschewski <swen.gorschewski@gmail.com>
+ *
+ * The Package is distributed under the MIT License
  */
-
-namespace Ganymed\Auth;
-
 
 use Ganymed\Persistence\Model;
 
