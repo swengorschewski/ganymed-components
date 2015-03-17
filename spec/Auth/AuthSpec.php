@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Ganymed\Services;
+namespace spec\Ganymed\Auth;
 
 use Ganymed\Persistence\Model;
 use Ganymed\Services\Session;
@@ -20,7 +20,7 @@ class AuthSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Ganymed\Services\Auth');
+        $this->shouldHaveType('Ganymed\Auth\Auth');
     }
 
     function it_should_validate_user(User $user) {

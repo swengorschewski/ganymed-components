@@ -1,4 +1,4 @@
-<?php namespace Ganymed\Services;
+<?php namespace Ganymed\Auth;
 
 /*
  * This file is part of the Ganymed Package.
@@ -7,6 +7,9 @@
  *
  * The Package is distributed under the MIT License
  */
+
+use Ganymed\Services\Session;
+
 class Auth {
 
     /**
@@ -19,11 +22,11 @@ class Auth {
     /**
      * User model.
      *
-     * @var $user
+     * @var User
      */
     protected $user;
 
-    function __construct(Session $session, $user)
+    function __construct(Session $session, User $user)
     {
         $this->session = $session;
         $this->user = $user;

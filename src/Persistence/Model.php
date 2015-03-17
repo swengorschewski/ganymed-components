@@ -19,7 +19,7 @@ abstract class Model {
     {
         $config = require __DIR__ . '/../../../../app/config/models.php';
         $storageImplementation = '\Ganymed\Persistence\\' . ucfirst($config['driver']) . 'Storage';
-        $storageName = strtolower(get_class($this)) . 's';
+        $storageName = strtolower((new \ReflectionClass($this))->getShortName()) . 's';
 
         $this->storage = new $storageImplementation($storageName, $config);
     }
