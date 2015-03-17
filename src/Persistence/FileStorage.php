@@ -1,7 +1,7 @@
 <?php namespace Ganymed\Persistence;
 
 
-use Ganymed\Exceptions\NotFoundException;
+use Ganymed\Exceptions\PageNotFoundException;
 
 class FileStorage implements StorageInterface {
 
@@ -27,7 +27,7 @@ class FileStorage implements StorageInterface {
         if (is_file($this->file)) {
             return unserialize(file_get_contents($this->file));
         } else {
-            throw new NotFoundException('File ' . $this->file . ' does not exists.');
+            throw new PageNotFoundException('File ' . $this->file . ' does not exists.');
         }
     }
 

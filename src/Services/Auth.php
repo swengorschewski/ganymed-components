@@ -19,14 +19,14 @@ class Auth {
     /**
      * User model.
      *
-     * @var \User
+     * @var $user
      */
     protected $user;
 
-    function __construct(Session $session)
+    function __construct(Session $session, $user)
     {
         $this->session = $session;
-        $this->user = new \User();
+        $this->user = $user;
     }
 
     /**
@@ -51,7 +51,6 @@ class Auth {
             if (password_verify($password, $this->user->password)) {
                 return true;
             }
-
         }
 
         // Handle errors on failed authentication.
