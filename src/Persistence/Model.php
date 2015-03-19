@@ -19,9 +19,8 @@ abstract class Model {
     {
         $config = require __DIR__ . '/../../../../app/config/models.php';
         $storageImplementation = '\Ganymed\Persistence\\' . ucfirst($config['driver']) . 'Storage';
-        $storageName = strtolower((new \ReflectionClass($this))->getShortName()) . 's';
 
-        $this->storage = new $storageImplementation($storageName, $config);
+        $this->storage = new $storageImplementation((new \ReflectionClass($this))->getShortName(), $config);
     }
 
     public function __get($name)
@@ -32,6 +31,11 @@ abstract class Model {
     public function __set($name, $value)
     {
         $this->$name = $value;
+    }
+    
+    public function __call($name, $values)
+    {
+        return $this->storage->$name(array_shift($values));
     }
 
     public function get($id)

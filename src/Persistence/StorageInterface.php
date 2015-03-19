@@ -10,7 +10,7 @@
 
 interface StorageInterface {
 
-    public function get($id);
+    public function __call($name, $value);
 
     public function getAll();
 
