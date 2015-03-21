@@ -50,7 +50,8 @@ class Auth {
      */
     public function validate($email, $password)
     {
-        if ($this->user = $this->user->get($email)) {
+        if ($this->user = \User::getByEmail($email)) {
+
             if (password_verify($password, $this->user->password)) {
                 return true;
             }
@@ -75,7 +76,6 @@ class Auth {
      */
     public function attempt($email, $password)
     {
-
         if ($this->validate($email, $password)) {
             $this->session->put('email', $email);
             $this->session->put('auth', true);

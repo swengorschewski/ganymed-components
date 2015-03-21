@@ -18,6 +18,6 @@ interface StorageInterface {
 
     public function save($model);
 
-    public function delete($id);
+    public function delete($model);
 
 }

@@ -37,12 +37,12 @@ class App {
         }
 
         // If no variables named environment is supplied set the environment to production.
-        if (getenv('environment') == '') {
-            putenv('environment=production');
+        if (getenv('ENVIRONMENT') == '') {
+            putenv('ENVIRONMENT=production');
         }
 
         // Set error handling depending on the supplied environment.
-        $errorHandler->setEnv(getenv('environment'));
+        $errorHandler->setEnv(getenv('ENVIRONMENT'));
         $errorHandler->run();
     }
 

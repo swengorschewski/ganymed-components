@@ -17,10 +17,7 @@ abstract class Model {
 
     function __construct()
     {
-        $config = require __DIR__ . '/../../../../app/config/models.php';
-        $storageImplementation = '\Ganymed\Persistence\\' . ucfirst($config['driver']) . 'Storage';
-
-        $this->storage = new $storageImplementation((new \ReflectionClass($this))->getShortName(), $config);
+        $this->storage = self::getStorage();
     }
 
     public function __get($name)
@@ -32,20 +29,24 @@ abstract class Model {
     {
         $this->$name = $value;
     }
+
+    private static function getStorage() {
+        $config = require __DIR__ . '/../../../../app/config/models.php';
+        $storageImplementation = '\Ganymed\Persistence\\' . ucfirst($config['driver']) . 'Storage';
+
+        return new $storageImplementation((new \ReflectionClass(get_called_class()))->getShortName(), $config);
+    }
     
-    public function __call($name, $values)
+    public static function __callStatic($name, $values)
     {
-        return $this->storage->$name(array_shift($values));
+        $storage = self::getStorage();
+        return $storage->$name(array_shift($values));
     }
 
-    public function get($id)
+    public static function getAll()
     {
-        return $this->storage->get($id);
-    }
-
-    public function getAll()
-    {
-        return $this->storage->getAll();
+        $storage = self::getStorage();
+        return $storage->getAll();
     }
 
     public function update()
