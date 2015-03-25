@@ -11,6 +11,7 @@ class RequestSpec extends ObjectBehavior
         $_SERVER['SCRIPT_NAME'] = '/index.php';
         $_SERVER['REQUEST_URI'] = '/login';
         $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
         $_GET = ['input1' => 'input1'];
         $_FILES = [];
     }
@@ -34,5 +35,18 @@ class RequestSpec extends ObjectBehavior
 
     function it_should_return_file_info() {
         $this->getFileInfo()->shouldBe([]);
+    }
+
+    function it_should_return_header_information() {
+        $this->getHeader('HTTP_X_REQUESTED_WITH')->shouldBe('XMLHttpRequest');
+    }
+
+    function it_should_be_xml_http_request() {
+        $this->isAjax()->shouldBe(true);
+    }
+
+    function it_should_not_be_xml_http_request() {
+        $_SERVER['HTTP_X_REQUESTED_WITH'] = '';
+        $this->isAjax()->shouldBe(false);
     }
 }

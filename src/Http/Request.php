@@ -13,7 +13,7 @@ class Request {
     /**
      * Return the HTTP method for the current request.
      *
-     * @return mixed
+     * @return string
      */
     public function getMethod()
     {
@@ -23,7 +23,7 @@ class Request {
     /**
      * Return the parsed uri of the current request.
      *
-     * @return mixed
+     * @return string
      */
     public function getUri()
     {
@@ -57,5 +57,26 @@ class Request {
     public function getFileInfo()
     {
         return $_FILES;
+    }
+
+    /**
+     * Returns a header value or null if no header with given name is found.
+     *
+     * @param $name
+     * @return string
+     */
+    public function getHeader($name)
+    {
+        return array_key_exists($name, $_SERVER) ? $_SERVER[$name] : '';
+    }
+
+    /**
+     * Determine if the current request is made via ajax.
+     *
+     * @return bool
+     */
+    public function isAjax()
+    {
+        return $this->getHeader('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest';
     }
 }
