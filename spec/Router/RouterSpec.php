@@ -20,6 +20,7 @@ class RouterSpec extends ObjectBehavior
 
     function it_should_register_a_get_route(Request $request) {
         $request->getUri()->willReturn('/login')->shouldBeCalled();
+        $request->getMethod()->willReturn('GET')->shouldBeCalled();
 
         $this->get('/login', function() {});
         $this->getRoute($request)->shouldHaveType('Ganymed\Router\Route');
