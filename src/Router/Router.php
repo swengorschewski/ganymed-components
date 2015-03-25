@@ -125,7 +125,7 @@ class Router {
 
 
                 // Check if the current HTTP method matches the method stored in the route.
-                if($route->getMethod() == $_SERVER['REQUEST_METHOD']) {
+                if($route->getMethod() == $request->getMethod()) {
                     $notImplemented = false;
                     // Get rid of the full match.
                     array_shift($paramValues);
