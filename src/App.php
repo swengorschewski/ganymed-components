@@ -23,7 +23,7 @@ class App {
      */
     public function setEnv($dotEnv)
     {
-        $errorHandler = ErrorHandler::getInstance();
+        $errorHandler = new ErrorHandler(new Request());
 
         // Manually catch error because the error handling is not initialized yet.
         if (!is_file($dotEnv)) {

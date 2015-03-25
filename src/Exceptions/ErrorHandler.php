@@ -8,16 +8,17 @@
  * The Package is distributed under the MIT License
  */
 
+use Ganymed\Http\Request;
 use Ganymed\Services\View;
 
 class ErrorHandler {
 
     /**
-     * Instance of the error handler class.
+     * Current HTTP Request.
      *
-     * @ErrorHandler
+     * @var Request
      */
-    private static $instance;
+    protected $request;
 
     /**
      * Environment of the application.
@@ -26,24 +27,9 @@ class ErrorHandler {
      */
     private $production;
 
-    /**
-     * Return the an instance of the error handler class.
-     *
-     * @return ErrorHandler
-     */
-    public static function getInstance()
-    {
-        if (self::$instance === null) {
-            self::$instance = new self;
-        }
-
-        return self::$instance;
+    public function __construct(Request $request) {
+        $this->request = $request;
     }
-
-    /**
-     * Private constructor to prevent instantiating with the new attribute.
-     */
-    private function __construct() {}
 
     /**
      * Set the application environment.
@@ -96,14 +82,21 @@ class ErrorHandler {
         $view = new View(__DIR__ . '/views/');
 
         if($this->production) {
-
-            if($exception instanceof PageNotFoundException) {
-                echo $view->withTemplate('404')->withData(compact('exception'))->render();
+            if($this->request->isAjax()) {
+                echo json_encode(['error' => $exception->getMessage()]);
             } else {
-                echo $view->withTemplate('simple_error')->render();
+                if($exception instanceof PageNotFoundException) {
+                    $view->withTemplate('404')->withData(compact('exception'))->render();
+                } else {
+                    $view->withTemplate('simple_error')->render();
+                }
             }
         } else {
-            echo $view->withTemplate('full_error')->withData(compact('exception'))->render();
+            if($this->request->isAjax()) {
+                echo json_encode(['error' => $exception->getMessage(),'file' => $exception->getFile(), 'line' => $exception->getLine()]);
+            } else {
+                $view->withTemplate('full_error')->withData(compact('exception'))->render();
+            }
         }
 
         die();
