@@ -181,4 +181,17 @@ class IocContainer {
         return $resolved;
     }
 
+    public function resolveMiddleware($middleware)
+    {
+        if(is_callable($middleware)) {
+            return $middleware;
+        } else {
+            $class = $this->getClass($middleware);
+            if($class instanceof MiddlewareInterface) {
+                return $class;
+            } else {
+                throw new TypeHintException(get_class($class) . ' does not implement the MiddlewareInterface');
+            }
+        }
+    }
 }

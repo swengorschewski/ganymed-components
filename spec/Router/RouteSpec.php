@@ -9,7 +9,7 @@ class RouteSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('pattern', 'method', 'callback', 'params');
+        $this->beConstructedWith('pattern', 'method', 'middleware', 'callback', 'params');
     }
 
     function it_is_initializable() {
@@ -22,6 +22,10 @@ class RouteSpec extends ObjectBehavior
 
     function it_should_return_method() {
         $this->getMethod()->shouldBe('method');
+    }
+
+    function it_should_return_middleware() {
+        $this->getMiddleware()->shouldBe('middleware');
     }
 
     function it_should_return_callback() {

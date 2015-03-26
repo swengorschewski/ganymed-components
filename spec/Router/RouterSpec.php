@@ -26,6 +26,18 @@ class RouterSpec extends ObjectBehavior
         $this->getRoute($request)->shouldHaveType('Ganymed\Router\Route');
     }
 
+    function it_should_register_a_route_with_middleware(Request $request) {
+        $request->getUri()->willReturn('/login')->shouldBeCalled();
+        $request->getMethod()->willReturn('GET')->shouldBeCalled();
+
+        $this->get('/middle', [
+            'middleware' => 'MiddlewareClass',
+            'controller' => function() {}
+        ]);
+
+        $this->getRoute($request)->shouldHaveType('Ganymed\Router\Route');
+    }
+
     function it_should_throw_exception(Request $request) {
         $request->getUri()->willReturn('/auth')->shouldBeCalled();
 

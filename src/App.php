@@ -66,7 +66,7 @@ class App {
             if(is_callable($middleware)) {
                 call_user_func($middleware);
             } else {
-                $middleware = IocContainer::getInstance()->getClass($middleware);
+                $middleware = IocContainer::getInstance()->resolveMiddleware($middleware);
                 $middleware->execute();
             }
 

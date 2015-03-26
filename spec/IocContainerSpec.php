@@ -3,6 +3,7 @@
 namespace spec\Ganymed;
 
 use Ganymed\App;
+use Ganymed\MiddlewareInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -37,6 +38,20 @@ class IocContainerSpec extends ObjectBehavior
         $this->getClass('Ganymed\App')->shouldHaveType('Ganymed\App');
     }
 
+    function it_should_resolve_middleware_from_interface() {
+        $this->bind(['Middleware' => function() {
+            return new AuthMiddleware();
+        }]);
+        $this->resolveMiddleware('Middleware')->shouldHaveType('Ganymed\MiddlewareInterface');
+    }
+
+    function its_resolve_middleware_method_should_throw_exception_if_middleware_interface_is_not_implemented() {
+        $this->bind(['Middleware' => function() {
+            return new ImNotAMiddleware();
+        }]);
+        $this->shouldThrow('Ganymed\Exceptions\TypeHintException')->duringResolveMiddleware('Middleware');
+    }
+
     function its_resolve_method_should_only_except_existing_class_name() {
         $this->shouldThrow('Ganymed\Exceptions\ClassNotFoundException')->duringGetClass('App');
     }
@@ -50,3 +65,19 @@ class IocContainerSpec extends ObjectBehavior
     }
 
 }
+
+/**
+ * MockClass
+ */
+class AuthMiddleware implements MiddlewareInterface {
+
+    public function execute()
+    {
+        // TODO: Implement execute() method.
+    }
+}
+
+/**
+ * MockClass
+ */
+class ImNotAMiddleware{}
