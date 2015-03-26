@@ -59,6 +59,19 @@ class App {
 
         // Get the current route.
         $route = $router->getRoute(new Request());
+
+        $middleware = $route->getMiddleware();
+        if($middleware != null) {
+
+            if(is_callable($middleware)) {
+                call_user_func($middleware);
+            } else {
+                $middleware = IocContainer::getInstance()->getClass($middleware);
+                $middleware->execute();
+            }
+
+        }
+
         $callback = $route->getCallback();
 
         // Resolve callbacks and matching parameters.

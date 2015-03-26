@@ -8,13 +8,15 @@ class Route {
 
     protected $pattern;
     protected $method;
+    protected $middleware;
     protected $callback;
     protected $params;
 
-    function __construct($pattern, $method, $callback, $params)
+    function __construct($pattern, $method, $middleware, $callback, $params)
     {
         $this->pattern = $pattern;
         $this->method = $method;
+        $this->middleware = $middleware;
         $this->callback = $callback;
         $this->params = $params;
     }
@@ -49,6 +51,14 @@ class Route {
     public function setParams($params)
     {
         $this->params = $params;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMiddleware()
+    {
+        return $this->middleware;
     }
 
     /**

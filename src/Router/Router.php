@@ -59,37 +59,48 @@ class Router {
      * Wrapper for GET routes
      *
      * @param $routePath
-     * @param $callback
+     * @param $controller
      */
-    public function get($routePath, $callback)
+    public function get($routePath, $controller)
     {
-        $this->setRoute($routePath, $callback, Route::GET);
+        $this->setRoute($routePath, $controller, Route::GET);
     }
 
     /**
      * Wrapper for POST routes
      *
      * @param $routePath
-     * @param $callback
+     * @param $controller
+     * @throws MethodNotFoundException
      */
-    public function post($routePath, $callback)
+    public function post($routePath, $controller)
     {
-        $this->setRoute($routePath, $callback, Route::POST);
+        $this->setRoute($routePath, $controller, Route::POST);
     }
 
     /**
      * Add a route to the routes array.
      *
      * @param $routePath
-     * @param $callback
+     * @param $controller
      * @param $method
      * @throws MethodNotFoundException
      */
-    public function setRoute($routePath, $callback, $method)
+    public function setRoute($routePath, $controller, $method)
     {
         // If the route has no leading slash it will be added.
         if (substr($routePath, 0, 1) != '/') {
             $routePath = '/' . $routePath;
+        }
+
+        $middleware = null;
+
+        if(is_array($controller)) {
+            if(!array_key_exists('controller', $controller)) {
+                throw new MethodNotFoundException('No controller assigned in route definition.');
+            }
+
+            extract($controller);
         }
 
         $pattern = "~^" . preg_replace('~\\\:[a-zA-Z0-9\_\-]+~', '([a-zA-Z0-9\-\_]+)', preg_quote($routePath)) . "$~";
@@ -97,7 +108,8 @@ class Router {
         array_push($this->routes, new Route(
             $pattern,
             $method,
-            $this->resolveCallback($callback),
+            $middleware,
+            $this->resolveCallable($controller),
             $this->getParams($routePath)
         ));
     }
@@ -122,7 +134,6 @@ class Router {
         foreach ($this->routes as $route) {
             // Check if the current route matches the current uri and determine the parameter values.
             if (preg_match($route->getPattern(), $request->getUri(), $paramValues)) {
-
 
                 // Check if the current HTTP method matches the method stored in the route.
                 if($route->getMethod() == $request->getMethod()) {
@@ -167,7 +178,7 @@ class Router {
      * @return array
      * @throws MethodNotFoundException
      */
-    private function resolveCallback($callback)
+    private function resolveCallable($callback)
     {
         // Check if the callback was provided as a string of type <Class@method>.
         if (is_string($callback) && strpos($callback, '@')) {
@@ -187,7 +198,7 @@ class Router {
      */
     public function missing($callback)
     {
-        $this->missing = new Route(null, 'GET', $this->resolveCallback($callback), []);
+        $this->missing = new Route(null, 'GET', null, $this->resolveCallable($callback), []);
     }
 
     /**
