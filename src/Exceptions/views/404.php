@@ -86,8 +86,8 @@
 
     <div class="center">
         <div>
-            <h2><?php echo (new \ReflectionClass($exception))->getShortName(); ?></h2>
-            <h1><?php echo http_response_code() ?> - Requested page not found.</h1>
+            <h2>{{ (new \ReflectionClass($exception))->getShortName() }}</h2>
+            <h1>{{ http_response_code() }} - Requested page not found.</h1>
         </div>
     </div>
 

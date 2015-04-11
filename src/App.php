@@ -76,13 +76,16 @@ class App {
 
         // Resolve callbacks and matching parameters.
         if (is_array($callback)) {
-            $className = $callback[0];
+
+            $controllerName = $callback[0];
             $methodName = $callback[1];
 
-            $class = IocContainer::getInstance()->getClass($className);
-            $params = IocContainer::getInstance()->resolveMethodParams($className, $methodName, $route->getParams());
+            $controller = IocContainer::getInstance()->getClass($controllerName);
+            $methodParams = IocContainer::getInstance()->resolveMethodParams($controllerName, $methodName, $route->getParams());
 
-            echo call_user_func_array([$class, $methodName], $params);
+            call_user_func_array([$controller, $methodName], $methodParams);
+
+            $controller->getResponse()->send();
 
         } else {
 

@@ -9,7 +9,7 @@
  */
 
 use Ganymed\Http\Request;
-use Ganymed\Services\View;
+use Ganymed\Templating\View;
 
 class ErrorHandler {
 
@@ -86,16 +86,16 @@ class ErrorHandler {
                 echo json_encode(['error' => $exception->getMessage()]);
             } else {
                 if($exception instanceof PageNotFoundException) {
-                    $view->withTemplate('404')->withData(compact('exception'))->render();
+                    echo $view->make('404')->with(compact('exception'))->render();
                 } else {
-                    $view->withTemplate('simple_error')->render();
+                    echo $view->make('simple_error')->render();
                 }
             }
         } else {
             if($this->request->isAjax()) {
                 echo json_encode(['error' => $exception->getMessage(),'file' => $exception->getFile(), 'line' => $exception->getLine()]);
             } else {
-                $view->withTemplate('full_error')->withData(compact('exception'))->render();
+                echo $view->make('full_error')->with(compact('exception'))->render();
             }
         }
 

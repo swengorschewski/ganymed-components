@@ -105,21 +105,17 @@
 
     <div class="center">
         <div class="error">
-            <h2><?php echo (new \ReflectionClass($exception))->getShortName(); ?></h2>
-            <h1><?php echo http_response_code() . ' - ' . $exception->getMessage(); ?></h1>
-            <span><?php echo $exception->getFile(). '<span class="notice">:' .$exception->getLine().'</span>'; ?></span>
+            <h2>{{ (new \ReflectionClass($exception))->getShortName() }}</h2>
+            <h1>{{ http_response_code() }} - {{ $exception->getMessage() }}</h1>
+            <span>{{ $exception->getFile() }}<span class="notice">{{ $exception->getLine() }}</span></span>
 
             <h2>Trace:</h2>
             <ul>
-                <?php
-                    foreach($exception->getTrace() as $key => $trace) {
-                        if($key != 0 && array_key_exists('file', $trace)) {
-                            echo '<li>';
-                            echo '<span>' . $trace['file']. '<span class="notice">:' . $trace['line'] . '</span></span>';
-                            echo '</li>';
-                        }
-                    }
-                ?>
+                @foreach($exception->getTrace() as $key => $trace)
+                    @if($key != 0 && array_key_exists('file', $trace))
+                        <li><span>{{ $trace['file'] }}<span class="notice">{{ $trace['line'] }}</span></span></li>
+                    @endif
+                @endforeach
             </ul>
         </div>
     </div>

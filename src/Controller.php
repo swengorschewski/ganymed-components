@@ -9,6 +9,7 @@
  */
 
 use Ganymed\Http\Request;
+use Ganymed\Http\Response;
 use Ganymed\Services\Session;
 
 class Controller {
@@ -19,14 +20,25 @@ class Controller {
     protected $request;
 
     /**
+     * @var Response
+     */
+    protected $response;
+
+    /**
      * @var Session
      */
     protected $session;
 
-    public function __construct(Request $request, Session $session)
+    public function __construct(Request $request, Response $response, Session $session)
     {
         $this->request = $request;
+        $this->response = $response;
         $this->session = $session;
+    }
+
+    public function getResponse()
+    {
+        return $this->response;
     }
 
 }
