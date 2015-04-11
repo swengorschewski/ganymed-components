@@ -46,16 +46,6 @@ class View {
         return $this;
     }
 
-    private function parse()
-    {
-        $this->parseIncludes();
-        $this->parseSections();
-        $this->parseExtends();
-        $this->parseYields();
-        $this->fileContents = $this->parseExpressions($this->fileContents);
-        $this->fileContents = $this->parseData($this->fileContents);
-    }
-
     private function getFileContent($fileName)
     {
         $fileName = $this->viewPath . str_replace("'", "", str_replace('.', '/', $fileName)) . '.php';
@@ -64,6 +54,16 @@ class View {
         } else {
             throw new ViewNotFoundException('Template File ' . $fileName . ' not found.');
         }
+    }
+
+    private function parse()
+    {
+        $this->parseIncludes();
+        $this->parseSections();
+        $this->parseExtends();
+        $this->parseYields();
+        $this->fileContents = $this->parseExpressions($this->fileContents);
+        $this->fileContents = $this->parseData($this->fileContents);
     }
 
     private function parseIncludes()
@@ -84,9 +84,8 @@ class View {
 
     private function parseSections()
     {
-        $sectionPattern = "/@section\('([^']+)'\)([^@endsection]+)/";
+        $sectionPattern = "/@section\('([^']+)'\)(.*?)@endsection/s";
         preg_match_all($sectionPattern, $this->fileContents, $sections);
-        pd($sections);
         $sections = array_combine($sections[1], array_map('trim', $sections[2]));
 
         foreach($sections as $key => $section) {
