@@ -1,10 +1,40 @@
-<?php
+<?php namespace Ganymed\Http;
 
-namespace Ganymed\Http;
+/*
+ * This file is part of the Ganymed Package.
+ *
+ * (c) Swen Gorschewski <swen.gorschewski@gmail.com>
+ *
+ * The Package is distributed under the MIT License
+ */
+
+use Ganymed\Templating\View;
 
 class Response {
 
+    /**
+     * Http headers.
+     *
+     * @var array
+     */
+    protected $headers = [];
+    
+    /**
+     * Parsed Http body as string.
+     *
+     * @var string
+     */
     protected $body;
+    
+    public function setHeader($key, $value)
+    {
+        $this->headers[$key] = $value;
+    }
+    
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
 
     public function setBody($body)
     {
@@ -18,5 +48,31 @@ class Response {
     public function getBody()
     {
         return $this->body;
+    }
+
+    public function fromView(View $view)
+    {
+        $this->setHeader('content-type', 'html/plain');
+        $this->setBody($view->render());
+    }
+
+    public function fromJson(Array $array)
+    {
+        $this->setHeader('content-type', 'json');
+        $this->setBody(json_encode($array));
+    }
+
+    public function fromPlain()
+    {
+
+    }
+
+    public function send()
+    {
+        foreach($this->headers as $key => $value) {
+            header($key, $value);
+        }
+
+        echo $this->body;
     }
 }

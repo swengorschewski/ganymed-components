@@ -159,6 +159,21 @@ class Session extends SessionHandler {
         return $errors;
     }
 
+    public function hasError($errorName)
+    {
+        $errors = unserialize($_SESSION['errors']);
+        return array_key_exists($errorName, $errors);
+    }
+
+    public function getError($errorName)
+    {
+        $errors = unserialize($_SESSION['errors']);
+        $error = $errors[$errorName];
+        unset($errors[$errorName]);
+        $this->put('errors', $errors);
+        return $error;
+    }
+
     public function hasFlashMessage()
     {
         return $this->has('flash_message');

@@ -65,7 +65,7 @@ class FileStorage implements StorageInterface {
                 return $model;
         }
 
-        throw new ModelNotFoundException('Could not find Model.');
+        return [];
     }
 
     /**
