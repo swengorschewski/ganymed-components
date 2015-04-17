@@ -1,15 +1,54 @@
 <?php namespace Ganymed\Router;
 
+/*
+ * This file is part of the Ganymed Package.
+ *
+ * (c) Swen Gorschewski <swen.gorschewski@gmail.com>
+ *
+ * The Package is distributed under the MIT License
+ */
 
 class Route {
 
+    /**
+     *
+     */
     const GET = 'GET';
     const POST = 'POST';
 
+    /**
+     * RegEx pattern for the route instance.
+     *
+     * @var String
+     */
     protected $pattern;
+
+    /**
+     * HTTP method registered for this route.
+     *
+     * @var String
+     */
     protected $method;
+
+    /**
+     * Middleware which will be executed before the supplied callback.
+     *
+     * @var String
+     */
     protected $middleware;
+
+    /**
+     * Callback to execute and pattern match.
+     *
+     * @var String
+     */
     protected $callback;
+
+    /**
+     * Parameters which should be supplied for this route.
+     *
+     * @var String
+     */
     protected $params;
 
     function __construct($pattern, $method, $middleware, $callback, $params)
