@@ -9,7 +9,7 @@
  */
 
 use Ganymed\Http\Request;
-use Ganymed\Templating\View;
+use Ganymed\View\View;
 
 class ErrorHandler {
 

@@ -1,4 +1,4 @@
-<?php namespace Ganymed\Templating;
+<?php namespace Ganymed\View;
 
 /*
  * This file is part of the Ganymed Package.
@@ -30,7 +30,7 @@ class View {
 
         ob_start();
         eval('?> ' . $this->fileContents . ' <?php ');
-        $result = ob_get_contents();
+        $result = ob_get_flush();
         ob_end_clean();
 
         return $result;
