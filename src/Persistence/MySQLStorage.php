@@ -85,7 +85,7 @@ class MySQLStorage implements StorageInterface {
             return $modelInstance;
         }
 
-        throw new ModelNotFoundException('Could not find Model.');
+        throw new ModelNotFoundException('Could not find ' . $this->modelName . ' by ' . $fieldName);
     }
 
     /**

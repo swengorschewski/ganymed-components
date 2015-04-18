@@ -65,7 +65,7 @@ class FileStorage implements StorageInterface {
                 return $model;
         }
 
-        return [];
+        throw new ModelNotFoundException('Could not find ' . $this->modelName . ' by ' . $fieldName);
     }
 
     /**
