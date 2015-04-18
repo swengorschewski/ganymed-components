@@ -8,7 +8,7 @@
  * The Package is distributed under the MIT License
  */
 
-use Ganymed\Templating\View;
+use Ganymed\View\View;
 
 class Response {
 
