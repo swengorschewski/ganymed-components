@@ -8,6 +8,7 @@
  * The Package is distributed under the MIT License
  */
 
+use Ganymed\Exceptions\ModelNotFoundException;
 use Ganymed\Services\Session;
 
 class Auth {
@@ -50,21 +51,28 @@ class Auth {
      */
     public function validate($email, $password)
     {
-        if ($this->user = \User::getByEmail($email)) {
 
-            if (password_verify($password, $this->user->password)) {
-                return true;
+        try {
+            if ($this->user = \User::getByEmail($email)) {
+
+                if (password_verify($password, $this->user->password)) {
+                    return true;
+                }
+
             }
+        } catch(ModelNotFoundException $e) {
+
+            // Handle errors on failed authentication.
+            $errors = [
+                'error' => 'Wrong email or password.'
+            ];
+
+            $this->session->put('errors', serialize($errors));
+
+            return false;
+
         }
 
-        // Handle errors on failed authentication.
-        $errors = [
-            'error' => 'Wrong Email or Password.'
-        ];
-
-        $this->session->put('errors', serialize($errors));
-
-        return false;
     }
 
     /**
@@ -83,6 +91,12 @@ class Auth {
         }
 
         return false;
+    }
+
+    public function logout()
+    {
+        $this->session->remove('email');
+        $this->session->remove('auth');
     }
 
 }

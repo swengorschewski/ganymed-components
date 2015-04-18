@@ -147,6 +147,13 @@ class Session extends SessionHandler {
         $_SESSION[$name] = $value;
     }
 
+    public function remove($name)
+    {
+        if(array_key_exists($name, $_SESSION)) {
+            unset($_SESSION[$name]);
+        }
+    }
+
     public function hasErrors()
     {
         return $this->has('errors');
