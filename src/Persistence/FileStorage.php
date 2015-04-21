@@ -159,16 +159,17 @@ class FileStorage implements StorageInterface {
     {
         $keys = array_keys($models);
 
-        if(sizeof($keys) == 0)
+        if(sizeof($keys) == 0) {
             return 0;
+        }
 
         $max = 0;
         foreach($keys as $key) {
-            if(intval($key)) {
+            if(is_int($key)) {
                if($key > $max)
                    $max = $key;
             } else {
-                throw new \Exception('Keys are not of type integer. Therefor need to supply an id.');
+                throw new \Exception('Keys are not of type integer. Therefore you need to supply an id.');
             }
         }
 
