@@ -41,9 +41,10 @@ class MySQLStorage implements StorageInterface {
         $this->tableName = strtolower($modelName) . 's';
 
         $host = getenv('DB_HOST');
+        $dbPort = getenv('DB_PORT');
         $dbName = getenv('DB_NAME');
         $this->dbh = new PDO(
-            "mysql:host=$host;dbname=$dbName",
+            "mysql:host=$host;port=$dbPort;dbname=$dbName",
             getenv('DB_USER'),
             getenv('DB_PASSWORD')
         );
