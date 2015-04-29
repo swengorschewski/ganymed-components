@@ -52,25 +52,25 @@ class Response {
 
     public function fromView(View $view)
     {
-        $this->setHeader('content-type', 'html/plain');
+        $this->setHeader('Content-Type', 'text/html');
         $this->setBody($view->render());
     }
 
     public function fromJson(Array $array)
     {
-        $this->setHeader('content-type', 'json');
+        $this->setHeader('Content-Type', 'application/json');
         $this->setBody(json_encode($array));
     }
 
     public function fromPlain()
     {
-
+        $this->setHeader('Content-Type', 'text/plain');
     }
 
     public function send()
     {
         foreach($this->headers as $key => $value) {
-            header($key, $value);
+            header($key . ': ' . $value);
         }
 
         echo $this->body;
