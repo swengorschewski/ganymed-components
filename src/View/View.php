@@ -29,8 +29,8 @@ class View {
         extract($this->data);
 
         ob_start();
-        eval('?> ' . $this->fileContents . ' <?php ');
-        $result = ob_get_flush();
+        eval('?>'.$this->fileContents.'<?php ');
+        $result = ob_get_contents();
         ob_end_clean();
 
         return $result;
@@ -41,7 +41,7 @@ class View {
         extract($this->data);
 
         ob_start();
-        eval('?> ' . $string . ' <?php ');
+        eval('?>'.$string.'<?php ');
         $result = ob_get_contents();
         ob_end_clean();
 
