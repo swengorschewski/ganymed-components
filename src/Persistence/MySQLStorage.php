@@ -38,13 +38,17 @@ class MySQLStorage implements StorageInterface {
     public function __construct($modelName, $config)
     {
         $this->modelName = $modelName;
-        $this->tableName = strtolower($modelName) . 's';
+
+        if($config['prefix'] == '') {
+            $this->tableName = strtolower($modelName) . 's';
+        } else {
+            $this->tableName = $config['prefix'] . '_' . strtolower($modelName) . 's';
+        }
 
         $host = getenv('DB_HOST');
-        $dbPort = getenv('DB_PORT');
         $dbName = getenv('DB_NAME');
         $this->dbh = new PDO(
-            "mysql:host=$host;port=$dbPort;dbname=$dbName",
+            "mysql:host=$host;dbname=$dbName",
             getenv('DB_USER'),
             getenv('DB_PASSWORD')
         );
